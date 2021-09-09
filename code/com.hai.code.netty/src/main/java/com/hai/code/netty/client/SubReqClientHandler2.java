@@ -2,7 +2,8 @@ package com.hai.code.netty.client;
 
 import com.alibaba.fastjson.JSON;
 import com.hai.code.netty.dto.MyTestRequest;
-import io.netty.channel.*;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  * @author admin_z by 2021/9/8
  * @ClassName SubReqClientHandler
  */
-public class SubReqClientHandler extends SimpleChannelInboundHandler<Object> {
+public class SubReqClientHandler2 extends SimpleChannelInboundHandler<Object> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -21,7 +22,7 @@ public class SubReqClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().writeAndFlush("来自于客户端的问候");
+//        ctx.channel().writeAndFlush("来自于客户端的问候");
         super.channelActive(ctx);
     }
 

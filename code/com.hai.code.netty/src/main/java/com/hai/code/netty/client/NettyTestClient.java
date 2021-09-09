@@ -32,9 +32,11 @@ public class NettyTestClient {
                     ch.pipeline().addLast(new ObjectDecoder(1024*1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
                     ch.pipeline().addLast(new ObjectEncoder());
                     ch.pipeline().addLast(new SubReqClientHandler());
+                    ch.pipeline().addLast(new SubReqClientHandler1());
+                    ch.pipeline().addLast(new SubReqClientHandler2());
                 }
             });
-            ChannelFuture channelFuture = b.connect("127.0.0.1", 1100).sync();
+            ChannelFuture channelFuture = b.connect("192.168.1.147", 1100).sync();
             channelFuture.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();

@@ -15,12 +15,11 @@ public class SubReqServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         System.out.println(ctx.channel().remoteAddress() + "," + msg );
-        ctx.channel().writeAndFlush("from server:" + UUID.randomUUID().toString());
+        ctx.channel().writeAndFlush(new MyTestRequest("from server:" + UUID.randomUUID().toString()));
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//        super.exceptionCaught(ctx, cause);
         cause.printStackTrace();
         ctx.close();  //如果出现异常，就将连接关闭掉
     }

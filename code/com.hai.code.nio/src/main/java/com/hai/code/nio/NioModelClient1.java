@@ -1,8 +1,9 @@
 package com.hai.code.nio;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author admin_z by 2021/9/7
@@ -10,11 +11,11 @@ import java.net.Socket;
  */
 public class NioModelClient1 {
 
-    public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("127.0.0.1", 8000);
-        OutputStream out = socket.getOutputStream();
-        String s = "hello world---hello1";
-        out.write(s.getBytes());
-        out.close();
+    public static void main(String[] args) {
+        String s = "犯得上发11";
+        byte[] msg = s.getBytes(StandardCharsets.UTF_8);
+
+        ByteBuf buf = Unpooled.wrappedBuffer(msg);
+        int i = buf.readableBytes();
     }
 }
