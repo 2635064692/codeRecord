@@ -1,6 +1,7 @@
 package com.hai.code.netty;
 
 import com.alibaba.fastjson.JSON;
+import com.hai.code.netty.dto.MyTestRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

@@ -1,5 +1,6 @@
-package com.hai.code.netty;
+package com.hai.code.netty.server;
 
+import com.hai.code.netty.utils.BeanUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,8 +10,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 
 /**
  * @author admin_z by 2021/9/8
@@ -19,24 +22,24 @@ import java.io.*;
 public class NettyTestServer {
 
     public void bind(){
-        NioEventLoopGroup boosGroup = new NioEventLoopGroup(2);
+        NioEventLoopGroup boosGroup = new NioEventLoopGroup();
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(boosGroup, workerGroup).
-                    option(ChannelOption.SO_BACKLOG,1024).
+//                    option(ChannelOption.SO_BACKLOG,1024).
                     channel(NioServerSocketChannel.class).
                     childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new ObjectDecoder(1024*1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
+                            ch.pipeline().addLast(new ObjectEncoder());
+                            ch.pipeline().addLast(new SubReqServerHandler());
                         }
                     });
-            System.out.println("netty server start");
-            ChannelFuture channelFuture = bootstrap.bind(8821).sync();
+            System.out.println("服务端启动，端口:8090");
+            ChannelFuture channelFuture = bootstrap.bind(1100).sync();
             channelFuture.channel().closeFuture().sync();
-
-
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -47,9 +50,8 @@ public class NettyTestServer {
 
     public static void main(String[] args) {
 //        SerializePerson();
-        DeserializePerson();
-
-//        new NettyTestServer().bind();
+//        DeserializePerson();
+        new NettyTestServer().bind();
     }
 
     private static void SerializePerson() {

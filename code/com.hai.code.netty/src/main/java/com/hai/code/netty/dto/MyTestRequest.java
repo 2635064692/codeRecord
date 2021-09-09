@@ -1,4 +1,4 @@
-package com.hai.code.netty;
+package com.hai.code.netty.dto;
 
 import lombok.Data;
 
